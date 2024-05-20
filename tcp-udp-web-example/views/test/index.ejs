@@ -1,0 +1,79 @@
+<!-- views/test/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Comunicação TCP/UDP</title>
+</head>
+<body>
+    <h1>Teste de Comunicação TCP/UDP</h1>
+    
+    <h2>TCP</h2>
+    <form id="tcpForm">
+        <input type="text" name="tcpMessage" id="tcpMessage" placeholder="Digite a mensagem TCP">
+        <input type="number" name="tcpLatency" id="tcpLatency" placeholder="Latência (ms)">
+        <input type="number" name="tcpPacketLoss" id="tcpPacketLoss" placeholder="Perda de Pacotes (%)">
+        <button type="button" onclick="sendTcpMessage()">Enviar TCP</button>
+    </form>
+    <div id="tcpResponse"></div>
+
+    <h2>UDP</h2>
+    <form id="udpForm">
+        <input type="text" name="udpMessage" id="udpMessage" placeholder="Digite a mensagem UDP">
+        <input type="number" name="udpLatency" id="udpLatency" placeholder="Latência (ms)">
+        <input type="number" name="udpPacketLoss" id="udpPacketLoss" placeholder="Perda de Pacotes (%)">
+        <button type="button" onclick="sendUdpMessage()">Enviar UDP</button>
+    </form>
+    <div id="udpResponse"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script >
+        function sendTcpMessage() {
+    var message = $('#tcpMessage').val();
+    var latency = $('#tcpLatency').val();
+    var packetLoss = $('#tcpPacketLoss').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/test/sendTcpMessage',
+        data: {
+            tcpMessage: message,
+            tcpLatency: latency,
+            tcpPacketLoss: packetLoss
+        },
+        success: function(response) {
+            $('#tcpResponse').text(response.response);
+        },
+        error: function(xhr, status, error) {
+            $('#tcpResponse').text('Erro ao enviar mensagem: ' + error);
+        }
+    });
+}
+
+function sendUdpMessage() {
+    var message = $('#udpMessage').val();
+    var latency = $('#udpLatency').val();
+    var packetLoss = $('#udpPacketLoss').val();
+
+    $.ajax({
+        type: 'POST',
+        url: '/test/sendUdpMessage',
+        data: {
+            udpMessage: message,
+            udpLatency: latency,
+            udpPacketLoss: packetLoss
+        },
+        success: function(response) {
+            $('#udpResponse').text(response.response);
+        },
+        error: function(xhr, status, error) {
+            $('#udpResponse').text('Erro ao enviar mensagem: ' + error);
+        }
+    });
+}
+
+
+    </script>
+</body>
+</html>
